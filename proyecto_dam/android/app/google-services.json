@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1055882496653",
+    "project_id": "proyecto-dam-a9ff4",
+    "storage_bucket": "proyecto-dam-a9ff4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055882496653:android:d54a21220ef6efcdf930c4",
+        "android_client_info": {
+          "package_name": "cl.usm.proyecto_dam_Ugalde_Luis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055882496653-g8ke39ifj8ailfgrq6bu0t08oj5mkce8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cl.usm.proyecto_dam_Ugalde_Luis",
+            "certificate_hash": "8ab3307ab77f873703d73aee81112328528e789b"
+          }
+        },
+        {
+          "client_id": "1055882496653-sk5udu77mf5dv4lceq3h73be30iu4f89.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaiqqyq4MvloU1LmIxwNLUfaoxZ2rvBv8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055882496653-sk5udu77mf5dv4lceq3h73be30iu4f89.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
