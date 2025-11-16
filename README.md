@@ -1,7 +1,4 @@
 # DAM_PROYECTO
-Perfecto madre, aquí tienes una **documentación corta, clara y profesional del proyecto *DAM_Proyecto***.
-Es ideal para poner en el **README.md** de GitHub o entregarlo como descripción general del repositorio.
-
 ---
 
 # 📘 Documentación del Proyecto
