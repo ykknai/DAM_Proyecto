@@ -45,7 +45,6 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Ícono principal (representa eventos)
                 Icon(
                   MdiIcons.calendarMonthOutline,
                   color: Colors.amber,
