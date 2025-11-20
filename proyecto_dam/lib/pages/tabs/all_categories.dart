@@ -86,7 +86,6 @@ class CategoriasPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // 🔹 Imagen arriba
                         ClipRRect(
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(20),
@@ -99,7 +98,6 @@ class CategoriasPage extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.blueGrey,
