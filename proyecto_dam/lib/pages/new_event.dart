@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:proyecto_dam/services/fs_service.dart';
 import 'package:proyecto_dam/widgets/form_campo.dart';
 
@@ -19,7 +21,10 @@ class _EventosAgregarState extends State<EventosAgregar> {
   TextEditingController fechaCtrl = TextEditingController();
   TextEditingController lugarCtrl = TextEditingController();
   TextEditingController tituloCtrl = TextEditingController();
+
+  DateTime fechaEvento = DateTime.now();
   String? categoriaSeleccionada;
+  String? errorFecha;
 
   @override
   void initState() {
@@ -86,7 +91,7 @@ class _EventosAgregarState extends State<EventosAgregar> {
                     },
                   ),
                 ),
-
+                //Titulo
                 FormCampo(
                   child: TextFormField(
                     controller: tituloCtrl,
@@ -110,7 +115,7 @@ class _EventosAgregarState extends State<EventosAgregar> {
                     },
                   ),
                 ),
-
+                //Lugar
                 FormCampo(
                   child: TextFormField(
                     controller: lugarCtrl,
@@ -128,11 +133,14 @@ class _EventosAgregarState extends State<EventosAgregar> {
                       if (lugar.length < 3) {
                         return 'Lugar mínimo de 3 caracteres';
                       }
+                      if (lugar.length >= 20) {
+                        return 'Lugar supera el maximo de 20 caracteres';
+                      }
                       return null;
                     },
                   ),
                 ),
-
+                // Categoria
                 FormCampo(
                   child: StreamBuilder(
                     stream: FsService().categorias(),
@@ -141,9 +149,7 @@ class _EventosAgregarState extends State<EventosAgregar> {
                           snapshot.connectionState == ConnectionState.waiting) {
                         return Text('Cargando categorías...');
                       }
-
                       var categorias = snapshot.data!.docs;
-
                       return DropdownButtonFormField(
                         validator: (categoria) {
                           if (categoria == null) {
@@ -173,9 +179,19 @@ class _EventosAgregarState extends State<EventosAgregar> {
                     },
                   ),
                 ),
+                //Fecha y Hora
+                SizedBox(
+                  width: double.infinity,
+                  child: DateTimePickerEvento(
+                    onDateTimeChanged: (value) {
+                      fechaEvento = value;
+                    },
+                    color: Colors.blue,
+                  ),
+                ),
 
                 SizedBox(height: 20),
-
+                //Agregar
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -200,17 +216,18 @@ class _EventosAgregarState extends State<EventosAgregar> {
                         await FsService().agregarEvento(
                           autorCtrl.text.trim(),
                           categoriaSeleccionada!,
-                          DateTime.now(),
+                          fechaEvento,
                           lugarCtrl.text.trim(),
                           tituloCtrl.text.trim(),
                           FirebaseAuth.instance.currentUser!.uid,
                         );
-                        Navigator.pop(context);
+                        Navigator.pop(context, true);
                       }
                     },
                   ),
                 ),
                 SizedBox(height: 20),
+                //Volver
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -239,6 +256,110 @@ class _EventosAgregarState extends State<EventosAgregar> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class DateTimePickerEvento extends StatefulWidget {
+  final Function(DateTime) onDateTimeChanged;
+  final Color color;
+
+  const DateTimePickerEvento({
+    super.key,
+    required this.onDateTimeChanged,
+    required this.color,
+  });
+
+  @override
+  State<DateTimePickerEvento> createState() => _DateTimePickerEventoState();
+}
+
+class _DateTimePickerEventoState extends State<DateTimePickerEvento> {
+  DateTime? fechaSeleccionada;
+
+  String formatFecha(DateTime fecha) {
+    return DateFormat('dd/MM/yyyy HH:mm').format(fecha);
+  }
+
+  Future<void> seleccionarFechaYHora() async {
+    final DateTime? fecha = await showDatePicker(
+      context: context,
+      initialDate: fechaSeleccionada ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(
+            context,
+          ).copyWith(colorScheme: ColorScheme.light(primary: widget.color)),
+          child: child!,
+        );
+      },
+    );
+
+    if (fecha != null) {
+      final TimeOfDay? hora = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(
+              context,
+            ).copyWith(colorScheme: ColorScheme.light(primary: widget.color)),
+            child: child!,
+          );
+        },
+      );
+
+      if (hora != null) {
+        final fechaHoraFinal = DateTime(
+          fecha.year,
+          fecha.month,
+          fecha.day,
+          hora.hour,
+          hora.minute,
+        );
+
+        setState(() {
+          fechaSeleccionada = fechaHoraFinal;
+        });
+
+        widget.onDateTimeChanged(fechaHoraFinal);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 5),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black, width: 1),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Row(
+        children: [
+          Icon(MdiIcons.calendarClock, color: widget.color),
+          SizedBox(width: 10),
+          Text(
+            fechaSeleccionada != null
+                ? formatFecha(fechaSeleccionada!)
+                : 'Seleccionar fecha y hora',
+            style: TextStyle(
+              color: fechaSeleccionada != null ? Colors.black : Colors.grey,
+              fontWeight: fechaSeleccionada != null
+                  ? FontWeight.bold
+                  : FontWeight.normal,
+            ),
+          ),
+          Spacer(),
+          IconButton(
+            icon: Icon(Icons.edit_calendar_outlined, color: widget.color),
+            onPressed: seleccionarFechaYHora,
+          ),
+        ],
       ),
     );
   }

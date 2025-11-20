@@ -37,7 +37,7 @@ class FsService {
     return FirebaseFirestore.instance.collection('eventos').doc().set({
       'autor': autor,
       'categoria': categoria,
-      'fecha': fecha,
+      'fecha': Timestamp.fromDate(fecha),
       'lugar': lugar,
       'titulo': titulo,
       'uid': uid,

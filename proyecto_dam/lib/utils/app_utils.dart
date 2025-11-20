@@ -6,7 +6,7 @@ class AppUtils {
       SnackBar(
         content: Text(mensaje),
         duration: Duration(seconds: 3),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blueGrey,
       ),
     );
   }

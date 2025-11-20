@@ -194,11 +194,15 @@ class _TodosEventosPageState extends State<TodosEventosPage> {
                                       size: 20,
                                     ),
                                     SizedBox(width: 6),
-                                    Text(
-                                      'Lugar: ${evento['lugar']}',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.black87,
+                                    Flexible(
+                                      child: Text(
+                                        'Lugar: ${evento['lugar']}',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.black87,
+                                        ),
+                                        softWrap: true,
+                                        overflow: TextOverflow.visible,
                                       ),
                                     ),
                                   ],
@@ -247,7 +251,15 @@ class _TodosEventosPageState extends State<TodosEventosPage> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => EventosAgregar()),
-          );
+          ).then((value) {
+            if (value == true) {
+              AppUtils.mostrarSnackbar(
+                context,
+                'Evento agregado exitosamente.',
+              );
+            }
+            setState(() {});
+          });
         },
       ),
     );
