@@ -45,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Ícono principal (representa eventos)
                 Icon(
                   MdiIcons.calendarMonthOutline,
                   color: Colors.amber,
@@ -67,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 40),
 
+                // Botón de Google
                 ElevatedButton.icon(
                   onPressed: () async {
                     try {
@@ -106,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 SizedBox(height: 20),
 
+                // Mensaje de error
                 if (msgError.isNotEmpty)
                   Text(msgError, style: TextStyle(color: Colors.redAccent)),
               ],

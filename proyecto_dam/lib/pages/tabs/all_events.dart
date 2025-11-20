@@ -19,22 +19,43 @@ class TodosEventosPage extends StatefulWidget {
 class _TodosEventosPageState extends State<TodosEventosPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  bool filtrar = false;
+
   String formatearFecha(Timestamp fecha) {
     DateTime fechaDateTime = fecha.toDate();
-    return DateFormat('dd/MM/yyyy hh:mm').format(fechaDateTime);
+    return DateFormat('dd/MM/yyyy').format(fechaDateTime);
+  }
+
+  String formatearHora(Timestamp fecha) {
+    DateTime fechaDateTime = fecha.toDate();
+    return DateFormat('hh:mm a').format(fechaDateTime);
   }
 
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
 
+    final streamEventos = filtrar
+        ? FsService().eventosPorUsuario(user!.uid)
+        : FsService().eventos();
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
-          'Todos los Eventos',
+          filtrar ? 'Eventos propios' : 'Todos los Eventos',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(MdiIcons.filter, color: Colors.white),
+            tooltip: 'Filtar eventos',
+            onPressed: () {
+              filtrar = !filtrar;
+              setState(() {});
+            },
+          ),
+        ],
         centerTitle: true,
         backgroundColor: Color(0xff003566),
         elevation: 1,
@@ -55,7 +76,7 @@ class _TodosEventosPageState extends State<TodosEventosPage> {
         ),
 
         child: StreamBuilder(
-          stream: FsService().eventos(),
+          stream: streamEventos,
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -218,6 +239,23 @@ class _TodosEventosPageState extends State<TodosEventosPage> {
                                     SizedBox(width: 6),
                                     Text(
                                       'Fecha: ${formatearFecha(evento['fecha'])}',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      MdiIcons.clockOutline,
+                                      color: Colors.blueGrey,
+                                      size: 20,
+                                    ),
+                                    SizedBox(width: 6),
+                                    Text(
+                                      'Hora: ${formatearHora(evento['fecha'])}',
                                       style: TextStyle(
                                         fontSize: 15,
                                         color: Colors.black87,

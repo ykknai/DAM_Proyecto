@@ -14,6 +14,11 @@ class DetalleEventoPage extends StatelessWidget {
     return DateFormat('dd/MM/yyyy').format(fechaDateTime);
   }
 
+  String formatearHora(Timestamp fecha) {
+    DateTime fechaDateTime = fecha.toDate();
+    return DateFormat('hh:mm a').format(fechaDateTime);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,6 +137,24 @@ class DetalleEventoPage extends StatelessWidget {
                             SizedBox(width: 10),
                             Text(
                               'Fecha: ${formatearFecha(evento['fecha'])}',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Icon(
+                              MdiIcons.clockOutline,
+                              color: Colors.blueGrey,
+                              size: 28,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              'Hora: ${formatearHora(evento['fecha'])}',
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.black87,

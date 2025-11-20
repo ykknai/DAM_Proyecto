@@ -6,7 +6,7 @@ import 'package:proyecto_dam/pages/tabs/all_events.dart';
 import 'package:proyecto_dam/pages/tabs/all_categories.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -28,35 +28,35 @@ class _HomePageState extends State<HomePage> {
             Icon(MdiIcons.calendarMonthOutline, color: Colors.amber, size: 30),
             Text(
               ' Eventify',
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
           ],
         ),
-        backgroundColor: const Color(0xFF051E34),
+        backgroundColor: Color(0xFF051E34),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 8.0),
+            padding: EdgeInsets.only(right: 8),
             child: CircleAvatar(
-              radius: 24, // el contorno
-              backgroundColor: Colors.blue, // color del borde
+              radius: 24,
+              backgroundColor: Colors.blue,
               child: CircleAvatar(
-                radius: 21, // el avatar interno
+                radius: 21,
                 backgroundImage:
                     FirebaseAuth.instance.currentUser?.photoURL != null
                     ? NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!)
                     : null,
                 backgroundColor: Colors.grey.shade300,
                 child: FirebaseAuth.instance.currentUser?.photoURL == null
-                    ? const Icon(Icons.person, color: Colors.black54)
+                    ? Icon(Icons.person, color: Colors.black54)
                     : null,
               ),
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white),
+            icon: Icon(Icons.logout, color: Colors.white),
             tooltip: 'Cerrar sesión',
             onPressed: () {
               _authController.signOut(context);
@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
           });
         },
         indicatorColor: Colors.blueAccent.shade700,
-        backgroundColor: const Color(0xFF051E34),
+        backgroundColor: Color(0xFF051E34),
         labelTextStyle: WidgetStatePropertyAll(
           TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -84,9 +84,9 @@ class _HomePageState extends State<HomePage> {
             label: 'Inicio',
           ),
           NavigationDestination(
-            icon: Icon(MdiIcons.accountOutline, color: Colors.white),
-            selectedIcon: Icon(MdiIcons.account, color: Colors.blue),
-            label: 'Perfil',
+            icon: Icon(Icons.category, color: Colors.white),
+            selectedIcon: Icon(Icons.category_outlined, color: Colors.blue),
+            label: 'Categorias',
           ),
         ],
       ),

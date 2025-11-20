@@ -2,10 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FsService {
+  //MOSTRAR TODOS LOS EVENTOS
   Stream<QuerySnapshot> eventos() {
     return FirebaseFirestore.instance.collection('eventos').snapshots();
   }
 
+  //MOSTRAR LOS EVENTOS DE UN USUARIO EN CONCRETO
+  Stream<QuerySnapshot> eventosPorUsuario(String uid) {
+    return FirebaseFirestore.instance
+        .collection('eventos')
+        .where('uid', isEqualTo: uid)
+        .snapshots();
+  }
+
+  //MOSTRAR TODAS LAS CATEGORIAS
   Stream<QuerySnapshot> categorias() {
     return FirebaseFirestore.instance
         .collection('categorias')
@@ -13,6 +23,7 @@ class FsService {
         .snapshots();
   }
 
+  //MOSTRAR UN EVENTO EN CONCRETO
   Future<Map<String, dynamic>?> eventoId(String id) async {
     final doc = await FirebaseFirestore.instance
         .collection('eventos')
@@ -26,6 +37,7 @@ class FsService {
     return null;
   }
 
+  //AGREGAR
   Future<void> agregarEvento(
     String autor,
     String categoria,
@@ -44,6 +56,7 @@ class FsService {
     });
   }
 
+  //BORRAR
   Future<bool> borrarEvento(String id) async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
